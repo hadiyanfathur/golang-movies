@@ -1,0 +1,211 @@
+openapi: 3.0.3
+info:
+  title: Go Movies
+  description: Movies Project Using Golang
+  version: 1.0.0
+servers:
+  - url: http://localhost:8088/api
+    description: Development server
+paths:
+  "/movies":
+    get:
+      tags:
+        - Movie API
+      description: Return All Movies
+      summary: Find all Movies
+      responses:
+        '200':
+          description: List of movies
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - "$ref": "#/components/schemas/BaseResponse"
+                  - type: object
+                    properties:
+                      data: 
+                        type: array
+                        items: 
+                          "$ref": "#/components/schemas/Movie"
+    post: 
+      tags:
+        - Movie API
+      description: Save Movie
+      summary: Create Movie
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: 
+              "$ref": "#/components/schemas/MovieRequest"
+      responses:
+        '200':
+          description: Success Save Movie
+          content:
+            application/json:
+              schema: 
+                allOf:
+                  - "$ref": "#/components/schemas/BaseResponse"
+                  - type: object
+                    properties:
+                      data:
+                        "$ref" : "#/components/schemas/Movie"
+  "/movies/{movieId}":
+    get: 
+      tags:
+        - Movie API
+      description: Find movie by id
+      summary: Return Movie By Id
+      parameters:
+        - name: movieId
+          in: path
+          description: Path to Fetch
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Movie by id
+          content:
+            application/json:
+              schema: 
+                allOf:
+                  - "$ref": "#/components/schemas/BaseResponse"
+                  - type: object
+                    properties:
+                      data: 
+                        "$ref": "#/components/schemas/Movie"
+    put: 
+      tags:
+        - Movie API
+      description: Update Movie
+      summary: Update Movie
+      parameters:
+        - name: movieId
+          in: path
+          description: Path to Fetch
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: 
+              "$ref": "#/components/schemas/MovieRequest"
+      responses:
+        '200':
+          description: Movie by id
+          content:
+            application/json:
+              schema: 
+                allOf:
+                  - "$ref": "#/components/schemas/BaseResponse"
+                  - type: object
+                    properties:
+                      data: 
+                        "$ref": "#/components/schemas/Movie"
+    delete: 
+      tags:
+        - Movie API
+      description: Delete Movie
+      summary: Delete Movie
+      parameters:
+        - name: movieId
+          in: path
+          description: Path to Fetch
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Movie by id
+          content:
+            application/json:
+              schema: 
+                allOf:
+                  - "$ref": "#/components/schemas/BaseResponse"
+                  - type: object
+                    properties:
+                      data: 
+                        type: object
+                        default: null
+components:
+  schemas:
+    BaseResponse:
+      description: Base Response
+      type: object
+      properties:
+        code: 
+          type: integer
+          default: 200
+        message:
+          type: string
+        errorMessage:
+          type: string
+          default: null
+    PagingResponse:
+      description: Paging Response
+      type: object
+      properties:
+        content:
+          type: array
+          items: 
+            type: object
+            default: null
+        page:
+          type: integer
+        totalPage:
+          type: integer
+        totalElement:
+          type: integer
+    Movie:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        description:
+          type: string
+    MovieRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+    InternalServerError:
+      description: InternalServerError
+      type: object
+      properties:
+        success: 
+          type: boolean
+          default: false
+        message:
+          type: string
+          default: null
+        errorMessage:
+          type: string
+        data:
+          type: object
+          default: null
+  examples:
+    genres: 
+      summary: Genre 1 examples
+      value:
+        success: true
+        message: Genre List
+        errorMessage: null
+        data: 
+          - id: 1
+            name: Action 
+          - id: 2
+            name: Horror
+    success: 
+      summary: example success responses
+      value:
+        success: true
+        message: success
+        errorMessage: null
