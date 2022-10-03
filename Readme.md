@@ -1,5 +1,5 @@
 # **GO MOVIES**
-### Project to Learn go
+### Project Intended to Learn Go
 
 - router : https://github.com/julienschmidt/httprouter
 - ORM : https://github.com/go-gorm/gorm
