@@ -35,7 +35,6 @@ func (repository *MovieRepositoryImpl) Delete(ctx context.Context, db *gorm.DB, 
 func (repository *MovieRepositoryImpl) FindById(ctx context.Context, db *gorm.DB, movieId uint) (entity.Movie, error) {
 	var movie entity.Movie
 	result := db.First(&movie, movieId)
-	helper.PanicIfError(result.Error)
 
 	if result.RowsAffected > 0 {
 		return movie, nil

@@ -2,6 +2,7 @@ package app
 
 import (
 	"github.com/hadiyanfathur/golang-movies/controller"
+	"github.com/hadiyanfathur/golang-movies/exception"
 	"github.com/julienschmidt/httprouter"
 )
 
@@ -13,6 +14,9 @@ func NewRouter(movieController controller.MovieController) *httprouter.Router {
 	router.POST("/api/movies", movieController.Create)
 	router.PUT("/api/movies/:movieId", movieController.Update)
 	router.DELETE("/api/movies/:movieId", movieController.Delete)
+
+	router.NotFound = exception.NotFoundHandler()
+	router.PanicHandler = exception.ExceptionHandler
 
 	return router
 }
